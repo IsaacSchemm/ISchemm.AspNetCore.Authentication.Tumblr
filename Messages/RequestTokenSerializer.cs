@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authentication;
 using System;
 using System.IO;
 
-namespace ISchemm.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Tumblr
 {
     /// <summary>
-    /// Serializes and deserializes Twitter request and access tokens so that they can be used by other application components.
+    /// Serializes and deserializes Tumblr request and access tokens so that they can be used by other application components.
     /// </summary>
     public class RequestTokenSerializer : IDataSerializer<RequestToken>
     {
@@ -36,7 +36,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         /// Deserializes a request token.
         /// </summary>
         /// <param name="data">A byte array containing the serialized token</param>
-        /// <returns>The Twitter request token</returns>
+        /// <returns>The Tumblr request token</returns>
         public virtual RequestToken Deserialize(byte[] data)
         {
             using (var memory = new MemoryStream(data))
@@ -49,7 +49,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         }
 
         /// <summary>
-        /// Writes a Twitter request token as a series of bytes. Used by the <see cref="Serialize"/> method.
+        /// Writes a Tumblr request token as a series of bytes. Used by the <see cref="Serialize"/> method.
         /// </summary>
         /// <param name="writer">The writer to use in writing the token</param>
         /// <param name="token">The token to write</param>
@@ -73,7 +73,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         }
 
         /// <summary>
-        /// Reads a Twitter request token from a series of bytes. Used by the <see cref="Deserialize"/> method.
+        /// Reads a Tumblr request token from a series of bytes. Used by the <see cref="Deserialize"/> method.
         /// </summary>
         /// <param name="reader">The reader to use in reading the token bytes</param>
         /// <returns>The token</returns>

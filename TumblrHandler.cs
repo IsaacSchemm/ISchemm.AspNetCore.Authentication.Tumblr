@@ -18,9 +18,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
-namespace ISchemm.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Tumblr
 {
-    public class TwitterHandler : RemoteAuthenticationHandler<TwitterOptions>
+    public class TumblrHandler : RemoteAuthenticationHandler<TumblrOptions>
     {
         private HttpClient Backchannel => Options.Backchannel;
 
@@ -28,17 +28,17 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
         /// If it is not provided a default instance is supplied which does nothing when the methods are called.
         /// </summary>
-        protected new TwitterEvents Events
+        protected new TumblrEvents Events
         {
-            get { return (TwitterEvents)base.Events; }
+            get { return (TumblrEvents)base.Events; }
             set { base.Events = value; }
         }
 
-        public TwitterHandler(IOptionsMonitor<TwitterOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+        public TumblrHandler(IOptionsMonitor<TumblrOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         { }
 
-        protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new TwitterEvents());
+        protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new TumblrEvents());
 
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
@@ -93,8 +93,8 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
             {
                 new Claim(ClaimTypes.NameIdentifier, accessToken.UserId, ClaimValueTypes.String, ClaimsIssuer),
                 new Claim(ClaimTypes.Name, accessToken.ScreenName, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim("urn:twitter:userid", accessToken.UserId, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim("urn:twitter:screenname", accessToken.ScreenName, ClaimValueTypes.String, ClaimsIssuer)
+                new Claim("urn:tumblr:userid", accessToken.UserId, ClaimValueTypes.String, ClaimsIssuer),
+                new Claim("urn:tumblr:screenname", accessToken.ScreenName, ClaimValueTypes.String, ClaimsIssuer)
             },
             ClaimsIssuer);
 
@@ -131,7 +131,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
                 action.Run(user, identity, ClaimsIssuer);
             }
 
-            var context = new TwitterCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, token.UserId, token.ScreenName, token.Token, token.TokenSecret, user);
+            var context = new TumblrCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, token.UserId, token.ScreenName, token.Token, token.TokenSecret, user);
             await Events.CreatingTicket(context);
 
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -146,13 +146,13 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
 
             // If CallbackConfirmed is false, this will throw
             var requestToken = await ObtainRequestTokenAsync(BuildRedirectUri(Options.CallbackPath), properties);
-            var twitterAuthenticationEndpoint = TwitterDefaults.AuthenticationEndpoint + requestToken.Token;
+            var tumblrAuthenticationEndpoint = TumblrDefaults.AuthenticationEndpoint + requestToken.Token;
 
             var cookieOptions = Options.StateCookie.Build(Context, Clock.UtcNow);
 
             Response.Cookies.Append(Options.StateCookie.Name, Options.StateDataFormat.Protect(requestToken), cookieOptions);
 
-            var redirectContext = new RedirectContext<TwitterOptions>(Context, Scheme, Options, properties, twitterAuthenticationEndpoint);
+            var redirectContext = new RedirectContext<TumblrOptions>(Context, Scheme, Options, properties, tumblrAuthenticationEndpoint);
             await Events.RedirectToAuthorizationEndpoint(redirectContext);
         }
 
@@ -241,14 +241,14 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         {
             Logger.ObtainRequestToken();
 
-            var response = await ExecuteRequestAsync(TwitterDefaults.RequestTokenEndpoint, HttpMethod.Post, extraOAuthPairs: new Dictionary<string, string>() { { "oauth_callback", callBackUri } });
+            var response = await ExecuteRequestAsync(TumblrDefaults.RequestTokenEndpoint, HttpMethod.Post, extraOAuthPairs: new Dictionary<string, string>() { { "oauth_callback", callBackUri } });
             response.EnsureSuccessStatusCode();
             var responseText = await response.Content.ReadAsStringAsync();
 
             var responseParameters = new FormCollection(new FormReader(responseText).ReadForm());
             if (!string.Equals(responseParameters["oauth_callback_confirmed"], "true", StringComparison.Ordinal))
             {
-                throw new Exception("Twitter oauth_callback_confirmed is not true.");
+                throw new Exception("Tumblr oauth_callback_confirmed is not true.");
             }
 
             return new RequestToken { Token = Uri.UnescapeDataString(responseParameters["oauth_token"]), TokenSecret = Uri.UnescapeDataString(responseParameters["oauth_token_secret"]), CallbackConfirmed = true, Properties = properties };
@@ -261,7 +261,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
             Logger.ObtainAccessToken();
 
             var formPost = new Dictionary<string, string> { { "oauth_verifier", verifier } };
-            var response = await ExecuteRequestAsync(TwitterDefaults.AccessTokenEndpoint, HttpMethod.Post, token, formData: formPost);
+            var response = await ExecuteRequestAsync(TumblrDefaults.AccessTokenEndpoint, HttpMethod.Post, token, formData: formPost);
 
             if (!response.IsSuccessStatusCode)
             {

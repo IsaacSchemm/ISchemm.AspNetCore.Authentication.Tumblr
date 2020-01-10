@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ISchemm.AspNetCore.Authentication.Twitter": {
+    "ISchemm.AspNetCore.Authentication.Tumblr": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

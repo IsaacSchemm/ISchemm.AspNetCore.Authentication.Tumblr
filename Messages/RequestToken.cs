@@ -3,20 +3,20 @@
 
 using Microsoft.AspNetCore.Authentication;
 
-namespace ISchemm.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Tumblr
 {
     /// <summary>
-    /// The Twitter request token obtained from the request token endpoint.
+    /// The Tumblr request token obtained from the request token endpoint.
     /// </summary>
     public class RequestToken
     {
         /// <summary>
-        /// Gets or sets the Twitter request token.
+        /// Gets or sets the Tumblr request token.
         /// </summary>
         public string Token { get; set; }
 
         /// <summary>
-        /// Gets or sets the Twitter token secret.
+        /// Gets or sets the Tumblr token secret.
         /// </summary>
         public string TokenSecret { get; set; }
 

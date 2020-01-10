@@ -8,29 +8,29 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace ISchemm.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Tumblr
 {
     /// <summary>
-    /// Options for the Twitter authentication handler.
+    /// Options for the Tumblr authentication handler.
     /// </summary>
-    public class TwitterOptions : RemoteAuthenticationOptions
+    public class TumblrOptions : RemoteAuthenticationOptions
     {
-        private const string DefaultStateCookieName = "__TwitterState";
+        private const string DefaultStateCookieName = "__TumblrState";
 
         private CookieBuilder _stateCookieBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwitterOptions"/> class.
+        /// Initializes a new instance of the <see cref="TumblrOptions"/> class.
         /// </summary>
-        public TwitterOptions()
+        public TumblrOptions()
         {
-            CallbackPath = new PathString("/signin-twitter");
+            CallbackPath = new PathString("/signin-tumblr");
             BackchannelTimeout = TimeSpan.FromSeconds(60);
-            Events = new TwitterEvents();
+            Events = new TumblrEvents();
 
             ClaimActions.MapJsonKey(ClaimTypes.Email, "email", ClaimValueTypes.Email);
 
-            _stateCookieBuilder = new TwitterCookieBuilder(this)
+            _stateCookieBuilder = new TumblrCookieBuilder(this)
             {
                 Name = DefaultStateCookieName,
                 SecurePolicy = CookieSecurePolicy.SameAsRequest,
@@ -41,22 +41,19 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         }
 
         /// <summary>
-        /// Gets or sets the consumer key used to communicate with Twitter.
+        /// Gets or sets the consumer key used to communicate with Tumblr.
         /// </summary>
-        /// <value>The consumer key used to communicate with Twitter.</value>
+        /// <value>The consumer key used to communicate with Tumblr.</value>
         public string ConsumerKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the consumer secret used to sign requests to Twitter.
+        /// Gets or sets the consumer secret used to sign requests to Tumblr.
         /// </summary>
-        /// <value>The consumer secret used to sign requests to Twitter.</value>
+        /// <value>The consumer secret used to sign requests to Tumblr.</value>
         public string ConsumerSecret { get; set; }
 
         /// <summary>
-        /// Enables the retrieval user details during the authentication process, including
-        /// e-mail addresses. Retrieving e-mail addresses requires special permissions
-        /// from Twitter Support on a per application basis. The default is false.
-        /// See https://dev.twitter.com/rest/reference/get/account/verify_credentials
+        /// Enables the retrieval user details during the authentication process.
         /// </summary>
         public bool RetrieveUserDetails { get; set; }
 
@@ -71,11 +68,11 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         public ISecureDataFormat<RequestToken> StateDataFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="TwitterEvents"/> used to handle authentication events.
+        /// Gets or sets the <see cref="TumblrEvents"/> used to handle authentication events.
         /// </summary>
-        public new TwitterEvents Events
+        public new TumblrEvents Events
         {
-            get => (TwitterEvents)base.Events;
+            get => (TumblrEvents)base.Events;
             set => base.Events = value;
         }
 
@@ -90,7 +87,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
         }
 
         /// <summary>
-        /// Added the validate method to ensure that the customer key and customer secret values are not not empty for the twitter authentication middleware
+        /// Added the validate method to ensure that the customer key and customer secret values are not not empty for the Tumblr authentication middleware
         /// </summary>
         public override void Validate()
         {
@@ -106,13 +103,13 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
             }
         }
 
-        private class TwitterCookieBuilder : CookieBuilder
+        private class TumblrCookieBuilder : CookieBuilder
         {
-            private readonly TwitterOptions _twitterOptions;
+            private readonly TumblrOptions _tumblrOptions;
 
-            public TwitterCookieBuilder(TwitterOptions twitterOptions)
+            public TumblrCookieBuilder(TumblrOptions tumblrOptions)
             {
-                _twitterOptions = twitterOptions;
+                _tumblrOptions = tumblrOptions;
             }
 
             public override CookieOptions Build(HttpContext context, DateTimeOffset expiresFrom)
@@ -120,7 +117,7 @@ namespace ISchemm.AspNetCore.Authentication.Twitter
                 var options = base.Build(context, expiresFrom);
                 if (!Expiration.HasValue)
                 {
-                    options.Expires = expiresFrom.Add(_twitterOptions.RemoteAuthenticationTimeout);
+                    options.Expires = expiresFrom.Add(_tumblrOptions.RemoteAuthenticationTimeout);
                 }
                 return options;
             }
