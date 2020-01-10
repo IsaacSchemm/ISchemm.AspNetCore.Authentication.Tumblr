@@ -3,9 +3,10 @@
 
 using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Twitter
 {
     /// <summary>
     /// Contains information about the login session as well as the user <see cref="System.Security.Claims.ClaimsIdentity"/>.

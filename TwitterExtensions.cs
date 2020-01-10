@@ -2,8 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using ISchemm.AspNetCore.Authentication;
+using ISchemm.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 

@@ -1,10 +1,11 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.AspNetCore.Authentication;
 using System;
 using System.IO;
 
-namespace Microsoft.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Twitter
 {
     /// <summary>
     /// Serializes and deserializes Twitter request and access tokens so that they can be used by other application components.

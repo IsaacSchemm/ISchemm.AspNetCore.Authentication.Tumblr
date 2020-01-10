@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Net.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Twitter
 {
     /// <summary>
     /// Used to setup defaults for all <see cref="TwitterOptions"/>.

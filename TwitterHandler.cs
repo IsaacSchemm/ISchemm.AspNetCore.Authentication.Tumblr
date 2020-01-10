@@ -11,13 +11,14 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
-namespace Microsoft.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Twitter
 {
     public class TwitterHandler : RemoteAuthenticationHandler<TwitterOptions>
     {

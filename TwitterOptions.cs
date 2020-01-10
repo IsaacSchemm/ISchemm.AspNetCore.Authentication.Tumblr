@@ -5,9 +5,10 @@ using System;
 using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.AspNetCore.Authentication.Twitter
+namespace ISchemm.AspNetCore.Authentication.Twitter
 {
     /// <summary>
     /// Options for the Twitter authentication handler.
