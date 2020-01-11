@@ -89,24 +89,17 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
 
             var accessToken = await ObtainAccessTokenAsync(requestToken, oauthVerifier);
 
+            JsonDocument user = await RetrieveUserDetailsAsync(accessToken);
+
+            string userName = user.RootElement.GetProperty("response").GetProperty("user").GetProperty("name").GetString();
+
             var identity = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, accessToken.UserId, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim(ClaimTypes.Name, accessToken.ScreenName, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim("urn:tumblr:userid", accessToken.UserId, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim("urn:tumblr:screenname", accessToken.ScreenName, ClaimValueTypes.String, ClaimsIssuer)
+                new Claim(ClaimTypes.NameIdentifier, userName, ClaimValueTypes.String, ClaimsIssuer),
+                new Claim(ClaimTypes.Name, userName, ClaimValueTypes.String, ClaimsIssuer),
+                new Claim("urn:tumblr:username", userName, ClaimValueTypes.String, ClaimsIssuer)
             },
             ClaimsIssuer);
-
-            JsonDocument user;
-            if (Options.RetrieveUserDetails)
-            {
-                user = await RetrieveUserDetailsAsync(accessToken, identity);
-            }
-            else
-            {
-                user = JsonDocument.Parse("{}");
-            }
 
             using (user)
             {
@@ -131,7 +124,7 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
                 action.Run(user, identity, ClaimsIssuer);
             }
 
-            var context = new TumblrCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, token.UserId, token.ScreenName, token.Token, token.TokenSecret, user);
+            var context = new TumblrCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, token.Token, token.TokenSecret, user);
             await Events.CreatingTicket(context);
 
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
@@ -275,18 +268,15 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
             return new AccessToken
             {
                 Token = Uri.UnescapeDataString(responseParameters["oauth_token"]),
-                TokenSecret = Uri.UnescapeDataString(responseParameters["oauth_token_secret"]),
-                UserId = Uri.UnescapeDataString(responseParameters["user_id"]),
-                ScreenName = Uri.UnescapeDataString(responseParameters["screen_name"])
+                TokenSecret = Uri.UnescapeDataString(responseParameters["oauth_token_secret"])
             };
         }
 
-        // https://dev.twitter.com/rest/reference/get/account/verify_credentials
-        private async Task<JsonDocument> RetrieveUserDetailsAsync(AccessToken accessToken, ClaimsIdentity identity)
+        private async Task<JsonDocument> RetrieveUserDetailsAsync(AccessToken accessToken)
         {
             Logger.RetrieveUserDetails();
 
-            var response = await ExecuteRequestAsync("https://api.twitter.com/1.1/account/verify_credentials.json", HttpMethod.Get, accessToken, queryParameters: new Dictionary<string, string>() { { "include_email", "true" } });
+            var response = await ExecuteRequestAsync("https://api.tumblr.com/v2/user/info", HttpMethod.Get, accessToken);
 
             if (!response.IsSuccessStatusCode)
             {

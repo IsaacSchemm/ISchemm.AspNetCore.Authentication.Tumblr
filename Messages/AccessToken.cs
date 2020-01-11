@@ -8,14 +8,6 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
     /// </summary>
     public class AccessToken : RequestToken
     {
-        /// <summary>
-        /// Gets or sets the Tumblr User ID.
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Tumblr screen name.
-        /// </summary>
-        public string ScreenName { get; set; }
+        
     }
 }

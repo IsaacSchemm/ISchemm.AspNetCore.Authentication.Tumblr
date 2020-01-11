@@ -21,8 +21,6 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
         /// <param name="options">The options for Tumblr</param>
         /// <param name="principal">The <see cref="ClaimsPrincipal"/>.</param>
         /// <param name="properties">The <see cref="AuthenticationProperties"/>.</param>
-        /// <param name="userId">Tumblr user ID</param>
-        /// <param name="screenName">Tumblr screen name</param>
         /// <param name="accessToken">Tumblr access token</param>
         /// <param name="accessTokenSecret">Tumblr access token secret</param>
         /// <param name="user">User details</param>
@@ -32,31 +30,17 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
             TumblrOptions options,
             ClaimsPrincipal principal,
             AuthenticationProperties properties,
-            string userId,
-            string screenName,
             string accessToken,
             string accessTokenSecret,
             JsonElement user)
             : base(context, scheme, options)
         {
-            UserId = userId;
-            ScreenName = screenName;
             AccessToken = accessToken;
             AccessTokenSecret = accessTokenSecret;
             User = user;
             Principal = principal;
             Properties = properties;
         }
-
-        /// <summary>
-        /// Gets the Tumblr user ID
-        /// </summary>
-        public string UserId { get; }
-
-        /// <summary>
-        /// Gets the Tumblr screen name
-        /// </summary>
-        public string ScreenName { get; }
 
         /// <summary>
         /// Gets the Tumblr access token

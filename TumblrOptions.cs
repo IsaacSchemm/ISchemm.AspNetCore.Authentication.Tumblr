@@ -53,11 +53,6 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
         public string ConsumerSecret { get; set; }
 
         /// <summary>
-        /// Enables the retrieval user details during the authentication process.
-        /// </summary>
-        public bool RetrieveUserDetails { get; set; }
-
-        /// <summary>
         /// A collection of claim actions used to select values from the json user data and create Claims.
         /// </summary>
         public ClaimActionCollection ClaimActions { get; } = new ClaimActionCollection();
