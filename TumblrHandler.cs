@@ -97,7 +97,7 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
             {
                 new Claim(ClaimTypes.NameIdentifier, userName, ClaimValueTypes.String, ClaimsIssuer),
                 new Claim(ClaimTypes.Name, userName, ClaimValueTypes.String, ClaimsIssuer),
-                new Claim("urn:tumblr:username", userName, ClaimValueTypes.String, ClaimsIssuer)
+                new Claim(TumblrConstants.Claims.Username, userName, ClaimValueTypes.String, ClaimsIssuer)
             },
             ClaimsIssuer);
 
@@ -249,8 +249,6 @@ namespace ISchemm.AspNetCore.Authentication.Tumblr
 
         private async Task<AccessToken> ObtainAccessTokenAsync(RequestToken token, string verifier)
         {
-            // https://dev.twitter.com/docs/api/1/post/oauth/access_token
-
             Logger.ObtainAccessToken();
 
             var formPost = new Dictionary<string, string> { { "oauth_verifier", verifier } };
