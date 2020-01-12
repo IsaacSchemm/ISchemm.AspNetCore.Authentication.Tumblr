@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <Description>ASP.NET Core middleware that enables an application to support Tumblr's OAuth 1.0 authentication workflow.</Description>
+    <Description>ASP.NET Core middleware to support Tumblr's OAuth 1.0 authentication workflow (based on Microsoft's Twitter implementation)</Description>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>aspnetcore;authentication;security</PackageTags>
+    <PackageTags>aspnetcore;authentication;security;tumblr</PackageTags>
     <IsShippingPackage>true</IsShippingPackage>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <Version>3.1.0</Version>
+    <Authors>Isaac Schemm</Authors>
+    <Copyright />
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/IsaacSchemm/ISchemm.AspNetCore.Authentication.Tumblr</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
