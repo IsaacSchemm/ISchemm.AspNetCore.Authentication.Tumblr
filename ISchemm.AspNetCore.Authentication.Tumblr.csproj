@@ -12,9 +12,14 @@
     <StartupObject />
     <Version>3.1.0</Version>
     <Authors>Isaac Schemm</Authors>
-    <Copyright />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/IsaacSchemm/ISchemm.AspNetCore.Authentication.Tumblr</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 
 </Project>
